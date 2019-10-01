@@ -13,10 +13,10 @@ router.post('/', async(req, res, next) => {
         }
         const order = new Order({
             _id: new mongoose.Types.ObjectId(),
-             resturantId: req.body.resturantId,
+             resturant: req.body.resturantId,
              userId: req.body.userId,
              orderedFoods: selectedFoods,
-             subTotal: req.body.subTotal,
+             subtotal: req.body.subtotal,
              deliveryFee: req.body.deliveryFee,
              total: req.body.total    ,
              deliveryDetails:{
@@ -27,7 +27,7 @@ router.post('/', async(req, res, next) => {
              }       
         });
 
-        console.log(order);
+        await order.save();
         res.status(200).json({
             message:"Order created successfully",
             order
@@ -37,4 +37,11 @@ router.post('/', async(req, res, next) => {
     }
 });
 
+router.get('/', async(req, res, next) => {
+    const orders = await Order.find()
+     .populate('resturant userId', 'name address.area username' )
+    res.status(200).json({
+        orders
+    })
+})
 module.exports = router;
