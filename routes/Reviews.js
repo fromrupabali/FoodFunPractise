@@ -20,9 +20,9 @@ router.post('/', async(req, res, next) => {
 });
 
 
-router.get('/', async (req, res, next) => {
+router.get('/:resturantId', async (req, res, next) => {
     try{
-    const reviews = await Review.find();
+    const reviews = await Review.find({resturantId: req.params.resturantId});
     res.status(200).json({
       reviews
     });
